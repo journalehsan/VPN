@@ -1,16 +1,27 @@
 #!/bin/bash
 
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VENV_DIR="${SCRIPT_DIR}/.venv_shadowsocks"
+CONFIG_FILE="${SCRIPT_DIR}/shadowsocks/config.json"
+PATH="$HOME/.local/bin:${VENV_DIR}/bin:$PATH"
+export PATH
+
 # Start Shadowsocks Client
 echo "🚀 Starting Shadowsocks client..."
 
 # Check if shadowsocks is installed
-if ! command -v sslocal >/dev/null 2>&1; then
-    echo "❌ Shadowsocks not installed. Run ./setup_shadowsocks.sh first"
+if command -v sslocal >/dev/null 2>&1; then
+    SSLOCAL_BIN="$(command -v sslocal)"
+elif [[ -x "${VENV_DIR}/bin/sslocal" ]]; then
+    SSLOCAL_BIN="${VENV_DIR}/bin/sslocal"
+else
+    echo "❌ Shadowsocks client not installed. Run ./setup_shadowsocks.sh first"
     exit 1
 fi
 
 # Check if config exists
-CONFIG_FILE="/home/ehsator/Documents/VPN/shadowsocks/config.json"
 if [ ! -f "$CONFIG_FILE" ]; then
     echo "❌ Config file not found. Run ./setup_shadowsocks.sh first"
     exit 1
@@ -25,7 +36,7 @@ fi
 
 # Start shadowsocks client
 echo "🔌 Starting Shadowsocks client on port 1080..."
-sslocal -c "$CONFIG_FILE" &
+"$SSLOCAL_BIN" -c "$CONFIG_FILE" &
 SHADOWSOCKS_PID=$!
 
 # Wait for startup
