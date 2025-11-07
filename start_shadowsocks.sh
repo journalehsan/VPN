@@ -5,19 +5,16 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VENV_DIR="${SCRIPT_DIR}/.venv_shadowsocks"
 CONFIG_FILE="${SCRIPT_DIR}/shadowsocks/config.json"
-PATH="$HOME/.local/bin:${VENV_DIR}/bin:$PATH"
-export PATH
+# Don't modify PATH - use system shadowsocks-rust which supports modern ciphers
 
 # Start Shadowsocks Client
 echo "🚀 Starting Shadowsocks client..."
 
-# Check if shadowsocks is installed
+# Check if shadowsocks is installed (prefer shadowsocks-rust)
 if command -v sslocal >/dev/null 2>&1; then
     SSLOCAL_BIN="$(command -v sslocal)"
-elif [[ -x "${VENV_DIR}/bin/sslocal" ]]; then
-    SSLOCAL_BIN="${VENV_DIR}/bin/sslocal"
 else
-    echo "❌ Shadowsocks client not installed. Run ./setup_shadowsocks.sh first"
+    echo "❌ Shadowsocks client not installed. Install with: sudo pacman -S shadowsocks-rust"
     exit 1
 fi
 
