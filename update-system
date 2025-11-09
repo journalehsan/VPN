@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Update system using SOCKS5 proxy on port 1080
+echo "Updating system through SOCKS5 proxy (127.0.0.1:1080)..."
+
+# Set proxy environment variables and run pacman
+sudo http_proxy="socks5://127.0.0.1:1080" \
+     https_proxy="socks5://127.0.0.1:1080" \
+     all_proxy="socks5://127.0.0.1:1080" \
+     pacman -Syu "$@"

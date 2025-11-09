@@ -2,6 +2,36 @@
 
 This directory contains scripts to manage SSH tunnels and Shadowsocks for bypassing network filtering.
 
+## Installation
+
+### Fresh Arch Linux System
+
+If you're setting this up on a fresh Arch Linux system, first install all required dependencies:
+
+```bash
+cd ~/Documents/VPN
+./install_dependencies_arch.sh
+```
+
+This will install:
+- shadowsocks-libev (Shadowsocks client)
+- openssh (SSH client)
+- sshpass (automated SSH authentication)
+- net-tools (netstat)
+- openbsd-netcat (network testing)
+- openssl (password generation)
+- curl (connection testing)
+- torsocks (SOCKS proxy wrapper)
+- proxychains-ng (proxy chains)
+
+**For detailed dependency information, see [DEPENDENCIES.md](DEPENDENCIES.md)**
+
+### Manual Installation
+
+```bash
+sudo pacman -S shadowsocks-libev openssh sshpass net-tools openbsd-netcat openssl curl torsocks proxychains-ng
+```
+
 ## Server Details
 - **Host**: ubuntu@130.185.123.86
 - **Password**: Trk@#1403
